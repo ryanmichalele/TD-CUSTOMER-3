@@ -2,10 +2,6 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-// Generate Turnstile config from environment variable
-try {
-  require('./scripts/generate-config.js');
-} catch (_) {}
 
 const PORT = 3000;
 const BASE = __dirname;

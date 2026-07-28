@@ -9,7 +9,7 @@ export const handler = async (event) => {
   }
 
   const body = new URLSearchParams({
-    secret: process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY,
+    secret: '0x4AAAAAAEABTZFkONR247-UQcs3aFSKQYk',
     response: token
   })
 

@@ -1,10 +1,5 @@
 (function () {
-  var siteKey = window.TURNSTILE_SITE_KEY;
-
-  if (!siteKey) {
-    console.error('[Cloudflare Turnstile] TURNSTILE_SITE_KEY is not configured. Turnstile widget will not render.');
-    return;
-  }
+  var siteKey = '0x4AAAAAAEABTXl6BQjZ5ocM';
 
   var widgets = [];
 

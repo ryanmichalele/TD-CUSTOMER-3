@@ -1,3 +1,6 @@
+[build]
+  command = "node scripts/generate-config.js"
+
 [[redirects]]
   from = "/RS/UN-Display.do"
   to = "/log-in/index.html"

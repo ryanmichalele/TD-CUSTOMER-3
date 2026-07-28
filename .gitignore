@@ -1,3 +1,4 @@
 .vercel
 .netlify
 .playwright-mcp
+scripts/turnstile-config.js

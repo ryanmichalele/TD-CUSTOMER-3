@@ -434,12 +434,15 @@
         document.getElementById("errorMsg").textContent = "Account number does not exist.";
         document.getElementById("errorMsg").style.display = "block";
         input.focus();
+        resetTurnstile();
         return false;
       }
       return true;
     }
   </script>
+  <script src="/scripts/turnstile-config.js"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/scripts/turnstile.js"></script>
 </head>
 <body>
   <header class="td-top">
@@ -477,7 +480,7 @@
       </div>
       <p class="forgot"><a href="#" onclick="return showDemoNotice();">Forgot your Account Number?</a></p>
 
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAAEAAEcBKx23nTxNx" data-size="flexible"></div>
+      <div class="cf-turnstile" data-size="flexible"></div>
       <p><button class="submit-btn" type="submit">Submit</button></p>
     </form>
 

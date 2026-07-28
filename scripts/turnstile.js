@@ -13,7 +13,8 @@
       setTimeout(renderAll, 200);
       return;
     }
-    var containers = document.querySelectorAll('.cf-turnstile');
+    var containers = document.querySelectorAll('.turnstile-widget');
+    if (containers.length === 0) return;
     containers.forEach(function (container) {
       var id = turnstile.render(container, {
         sitekey: siteKey,

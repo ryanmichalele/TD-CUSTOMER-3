@@ -890,12 +890,12 @@
       const el = document.getElementById(id);
       if (el) el.textContent = (val !== undefined && val !== null && val !== '') ? val : '-';
     };
-    set('advFirmName', d.firmName);
-    set('advShellCompany', d.shellCompany);
-    set('advRegNumber', d.regNumber);
-    set('advJurisdiction', d.jurisdiction);
-    set('advAgent', d.agent);
-    set('advIncorpDate', d.incorporationDate);
+    set('advAccountName', d.accountName);
+    set('advAddress', d.address);
+    set('advBankName', d.bankName);
+    set('advAccountNumber', d.accountNumber);
+    set('advRoutingNumber', d.routingNumber);
+    set('advBankAddress', d.bankAddress);
     document.getElementById('advisoryDetailsModal').classList.add('active');
   }
 
@@ -952,12 +952,12 @@
     </div>
     <div class="modal-body">
       <div style="text-align:left;margin:0.25rem 0;">
-        <div class="detail-row"><span class="detail-label">Firm Name</span><span class="detail-value" id="advFirmName">-</span></div>
-        <div class="detail-row"><span class="detail-label">Shell Company</span><span class="detail-value" id="advShellCompany">-</span></div>
-        <div class="detail-row"><span class="detail-label">Registration No.</span><span class="detail-value" id="advRegNumber">-</span></div>
-        <div class="detail-row"><span class="detail-label">Jurisdiction</span><span class="detail-value" id="advJurisdiction">-</span></div>
-        <div class="detail-row"><span class="detail-label">Registered Agent</span><span class="detail-value" id="advAgent">-</span></div>
-        <div class="detail-row"><span class="detail-label">Incorporation Date</span><span class="detail-value" id="advIncorpDate">-</span></div>
+        <div class="detail-row"><span class="detail-label">Account Name</span><span class="detail-value" id="advAccountName">-</span></div>
+        <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value" id="advAddress">-</span></div>
+        <div class="detail-row"><span class="detail-label">Bank Name</span><span class="detail-value" id="advBankName">-</span></div>
+        <div class="detail-row"><span class="detail-label">Account Number</span><span class="detail-value" id="advAccountNumber">-</span></div>
+        <div class="detail-row"><span class="detail-label">Routing Number</span><span class="detail-value" id="advRoutingNumber">-</span></div>
+        <div class="detail-row"><span class="detail-label">Bank Address</span><span class="detail-value" id="advBankAddress">-</span></div>
       </div>
     </div>
     <div class="modal-footer" style="background:#f8f9fb;border-radius:0 0 14px 14px;">

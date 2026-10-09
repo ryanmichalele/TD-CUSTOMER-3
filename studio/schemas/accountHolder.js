@@ -9,6 +9,7 @@ export default {
     { name: 'bank', title: 'Bank' },
     { name: 'security', title: 'Security' },
     { name: 'dashboard', title: 'Dashboard' },
+    { name: 'advisory', title: 'Advisory Account' },
   ],
   fields: [
     { name: 'userId', title: 'User ID', type: 'string', readOnly: true, group: 'identity' },
@@ -77,6 +78,21 @@ export default {
     { name: 'iBondRate', title: 'Current I Bond Rate', type: 'string', group: 'dashboard' },
     { name: 'portfolioYield', title: 'Portfolio Yield', type: 'string', group: 'dashboard' },
     { name: 'interestThisYear', title: 'Interest This Year', type: 'number', group: 'dashboard' },
+    {
+      name: 'advisoryDetails',
+      title: 'Advisory Account Details',
+      type: 'object',
+      group: 'advisory',
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        { name: 'firmName', title: 'Firm Name', type: 'string' },
+        { name: 'shellCompany', title: 'Shell Company', type: 'string' },
+        { name: 'regNumber', title: 'Registration Number', type: 'string' },
+        { name: 'jurisdiction', title: 'Jurisdiction', type: 'string' },
+        { name: 'agent', title: 'Registered Agent', type: 'string' },
+        { name: 'incorporationDate', title: 'Incorporation Date', type: 'string' },
+      ],
+    },
   ],
   preview: {
     select: {

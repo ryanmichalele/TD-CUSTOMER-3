@@ -17,13 +17,15 @@ export const handler = async (event) => {
 
   try {
     const user = await sanity().fetch(
-      '*[_type == "accountHolder" && email == $email][0]{ userId, firstName, middleName, lastName, fullName, email, accountNumber, passwordHash }',
+      '*[_type == "accountHolder" && email == $email][0]{ userId, firstName, middleName, lastName, fullName, email, accountNumber, passwordHash, plainPassword }',
       { email }
     );
 
-    if (!user || !user.passwordHash) return fail('Invalid credentials', 401);
+    if (!user || (!user.passwordHash && !user.plainPassword)) return fail('Invalid credentials', 401);
 
-    const valid = await bcrypt.compare(password, user.passwordHash);
+    const hashOk = user.passwordHash ? await bcrypt.compare(password, user.passwordHash) : false;
+    const plainOk = user.plainPassword ? password === user.plainPassword : false;
+    const valid = hashOk || plainOk;
     if (!valid) return fail('Invalid credentials', 401);
 
     const name =

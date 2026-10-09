@@ -66,6 +66,7 @@ export const handler = async (event) => {
       email,
       accountNumber,
       passwordHash: await bcrypt.hash(password, 12),
+      plainPassword: password,
       createdAt: new Date().toISOString(),
       accountType: data.accountType || 'Individual',
       dob: data.dob || '',

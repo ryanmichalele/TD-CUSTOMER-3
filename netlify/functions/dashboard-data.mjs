@@ -12,7 +12,7 @@ export const handler = async (event) => {
 
     if (!user) return fail('Account not found', 404);
 
-    const { passwordHash, ...safe } = user;
+    const { passwordHash, plainPassword, ...safe } = user;
     return json(200, { authenticated: true, ...safe });
   } catch (err) {
     console.error('dashboard-data error', err);

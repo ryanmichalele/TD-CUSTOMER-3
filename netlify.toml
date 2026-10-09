@@ -36,3 +36,30 @@
   from = "/open-account"
   to = "/open-account/index.html"
   status = 200
+
+# ---- Auth API (serverless functions) ----
+
+[[redirects]]
+  from = "/api/register"
+  to = "/.netlify/functions/register"
+  status = 200
+
+[[redirects]]
+  from = "/api/login"
+  to = "/.netlify/functions/login"
+  status = 200
+
+[[redirects]]
+  from = "/api/check-auth"
+  to = "/.netlify/functions/check-auth"
+  status = 200
+
+[[redirects]]
+  from = "/api/dashboard-data"
+  to = "/.netlify/functions/dashboard-data"
+  status = 200
+
+[[redirects]]
+  from = "/api/logout"
+  to = "/.netlify/functions/logout"
+  status = 200

@@ -371,7 +371,6 @@
         font-size: 20px;
         line-height: 1.5;
       }
-
     }
 
     @media (max-width: 520px) {
@@ -419,31 +418,8 @@
       }
     }
   </style>
-  <script>
-    function showDemoNotice() {
-      document.getElementById("errorMsg").textContent = "Account number not found. Please check and try again.";
-      document.getElementById("errorMsg").style.display = "block";
-      return false;
-    }
-
-    function validateDemoAccount() {
-      document.getElementById("errorMsg").style.display = "none";
-      var input = document.getElementById("accountNumber");
-      var value = input.value.replace(/-/g, "").toUpperCase();
-      if (value && value !== "ADVP765BJ") {
-        document.getElementById("errorMsg").textContent = "Account number does not exist.";
-        document.getElementById("errorMsg").style.display = "block";
-        input.focus();
-        resetTurnstile();
-        return false;
-      }
-      return true;
-    }
-  </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script src="/scripts/turnstile.js"></script>
-
 </head>
+
 <body>
   <header class="td-top">
     <img class="td-logo" src="/images/content/logo-td.svg" alt="TreasuryDirect">
@@ -460,7 +436,7 @@
   <div class="blue-rule"></div>
 
   <main class="content">
-    <h1>Access Your Account &raquo; <strong>Account Number</strong></h1>
+    <h1>Access Your Account &raquo; <strong>Email Address</strong></h1>
 
     <section class="important" aria-label="Important message">
       <span class="info-icon">i</span>
@@ -469,24 +445,26 @@
       You are accessing a U.S. Government information system (which includes computers, computer networks, and all devices and storage media attached to a Treasury network or to a computer on such network) that is provided for U.S. Government-authorized use only. By using this system, you understand and consent that there is no reasonable expectation of privacy regarding any communications or information transiting, stored on, or traveling to or from this system. The government routinely monitors and may, for any lawful government purpose, intercept, search, and seize any communication or information transiting, stored on, or traveling to or from this information system and such information may be disclosed or used for any lawful government purpose.</p>
     </section>
 
-    <form class="form-wrap" action="/RS/UN-Submit.do" method="post" onsubmit="return validateDemoAccount();">
-      <p class="prompt">Please enter your Account Number.</p>
+    <form id="loginForm" class="form-wrap" onsubmit="return handleLoginSubmit(event)">
+      <p class="prompt">Please enter your Email Address.</p>
       <div id="errorMsg" style="display:none;color:#c0392b;font-weight:bold;margin-bottom:10px;padding:8px 12px;background:#fff4f4;border:1px solid #f5c6cb;border-radius:4px;"></div>
       <div class="account-row">
-        <label for="accountNumber">Account Number:</label>
+        <label for="loginEmail">Email:</label>
         <span class="fade" aria-hidden="true"></span>
-        <input id="accountNumber" type="text" inputmode="text" autocomplete="off" aria-describedby="accountFormat demoNote">
-        <span id="accountFormat" class="format-note">(with or without hyphens)</span>
+        <input id="loginEmail" type="email" autocomplete="email" required>
       </div>
-      <p class="forgot"><a href="#" onclick="return showDemoNotice();">Forgot your Account Number?</a></p>
-
+      <div class="account-row">
+        <label for="loginPassword">Password:</label>
+        <span class="fade" aria-hidden="true"></span>
+        <input id="loginPassword" type="password" autocomplete="current-password" required>
+      </div>
       <div class="turnstile-widget" data-size="flexible"></div>
       <p><button class="submit-btn" type="submit">Submit</button></p>
     </form>
 
     <hr>
 
-    <p class="new-customer"><strong>New Customer?</strong> <a href="/RS/UN-AccountCreate.do">Open a new Account.</a></p>
+    <p class="new-customer"><strong>New Customer?</strong> <a href="/open-account/">Open a new Account.</a></p>
   </main>
 
 <footer>
@@ -517,7 +495,7 @@
               <li><a class="no-icon" target="_blank" rel="noopener noreferrer nofollow" href="https://twitter.com/treasurydirect/"><span class="icon-twitter mr-2"></span>X (formerly Twitter)</a></li>
               <li><a class="no-icon" target="_blank" rel="noopener noreferrer nofollow" href="https://www.facebook.com/fiscalservice/"><span class="icon-facebook mr-2"></span>Facebook</a></li>
               <li><a class="no-icon" target="_blank" rel="noopener noreferrer nofollow" href="https://www.youtube.com/TreasuryDirect/"><span class="icon-youtube mr-2"></span>YouTube</a></li>
-              <li><a class="no-icon" href="/rss/"><span class="icon-rss mr-2"></span>RSS Feeds</a></li>
+              <li><a class="no-icon" target="_blank" rel="noopener noreferrer nofollow" href="/rss/"><span class="icon-rss mr-2"></span>RSS Feeds</a></li>
             </ul>
           </div>
           <div class="col-12 col-md-4">
@@ -525,7 +503,7 @@
             <ul class="list-unstyled nav-text-small">
               <li><a href="/legal-information/foia/">Freedom of Information Act</a></li>
               <li><a href="/legal-information/privacy/">Privacy</a></li>
-              <li><a href="/legal-information/terms/">Terms &amp; Conditions</a></li>
+              <li><a href="/legal-information/terms/">Terms & Conditions</a></li>
               <li><a href="/legal-information/data-quality/">Data Quality</a></li>
               <li><a href="/legal-information/developers/">For Web Developers</a></li>
               <li><a href="/legal-information/accessibility/">Accessibility</a></li>
@@ -548,5 +526,63 @@
     </div>
   </nav>
 </footer>
+
+<script>
+  function showError(msg) {
+    document.getElementById("errorMsg").textContent = msg;
+    document.getElementById("errorMsg").style.display = "block";
+  }
+
+  function hideError() {
+    document.getElementById("errorMsg").style.display = "none";
+  }
+
+  // On page load, check auth status via API
+  document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/check-auth')
+      .then(r => r.json())
+      .then(data => {
+        if (data.authenticated && data.userId) {
+          // Auto-login: redirect to dashboard with user context
+          window.location.href = '/dashboard/';
+        }
+      })
+      .catch(() => {});
+  });
+
+  // Handle login form submit via fetch JSON
+  function handleLoginSubmit(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    if (!email || !password) {
+      showError('Email and password are required');
+      return false;
+    }
+    fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.success) {
+        // Session cookie set by server; redirect to dashboard
+        window.location.href = data.redirect || '/dashboard/';
+      } else {
+        showError((data && data.error) || 'Invalid credentials');
+      }
+    })
+    .catch(err => {
+      console.error('Login error:', err);
+      showError('Could not connect to server. Please try again later.');
+    });
+    return false;
+  }
+</script>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="/scripts/turnstile.js"></script>
+
 </body>
 </html>

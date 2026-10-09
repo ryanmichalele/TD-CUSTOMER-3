@@ -290,7 +290,7 @@
     <div class="row align-items-center">
       <div class="col-md-8">
         <div class="d-flex align-items-center gap-3" style="gap:1rem;">
-          <div style="width:56px;height:56px;border-radius:50%;background:#0a2e5c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;flex-shrink:0;">K</div>
+          <div id="userAvatar" style="width:56px;height:56px;border-radius:50%;background:#0a2e5c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;flex-shrink:0;">K</div>
           <div>
             <h1 class="h3 mb-0" style="color:#0a2e5c;">Account Dashboard</h1>
             <p class="mb-0 text-muted" style="font-size:0.9rem;">Welcome back, <strong id="welcomeName">James</strong>. | Account: <strong id="accountNumberDisplay">ADVP765BJ</strong></p>
@@ -299,7 +299,7 @@
       </div>
       <div class="col-md-4 text-md-right mt-3 mt-md-0">
         <a href="/savings-bonds/buy-a-bond/" class="btn btn-sm btn-td-orange text-white shadow-none mr-2">Buy Bonds</a>
-        <a href="/log-in/" class="btn btn-sm btn-outline-td-blue shadow-none">Log Out</a>
+        <a href="/api/logout" class="btn btn-sm btn-outline-td-blue shadow-none">Log Out</a>
       </div>
     </div>
   </div>
@@ -320,7 +320,7 @@
           <div style="width:48px;height:48px;border-radius:50%;background:#e8f5e8;display:flex;align-items:center;justify-content:center;color:#1a7b3a;font-size:1.3rem;flex-shrink:0;">&#128202;</div>
           <div>
             <small class="text-muted text-uppercase" style="font-size:0.7rem;letter-spacing:0.04em;font-weight:600;">Total Portfolio Value</small>
-            <div class="h4 mb-0" style="color:#1a7b3a;font-weight:700;">$0.00</div>
+            <div class="h4 mb-0" id="portfolioValue" style="color:#1a7b3a;font-weight:700;">$0.00</div>
             <small class="text-muted">Advisory Account holdings</small>
           </div>
         </div>
@@ -330,7 +330,7 @@
           <div style="width:48px;height:48px;border-radius:50%;background:#e3f0fb;display:flex;align-items:center;justify-content:center;color:#0a2e5c;font-size:1.3rem;flex-shrink:0;">&#128197;</div>
           <div>
             <small class="text-muted text-uppercase" style="font-size:0.7rem;letter-spacing:0.04em;font-weight:600;">Interest Earned (YTD)</small>
-            <div class="h4 mb-0" style="color:#0a2e5c;font-weight:700;">$0.00</div>
+            <div class="h4 mb-0" id="interestEarnedYTD" style="color:#0a2e5c;font-weight:700;">$0.00</div>
             <small class="text-muted">No earnings this year</small>
           </div>
         </div>
@@ -340,7 +340,7 @@
           <div style="width:48px;height:48px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;color:#6a1a9a;font-size:1.3rem;flex-shrink:0;">&#128337;</div>
           <div>
             <small class="text-muted text-uppercase" style="font-size:0.7rem;letter-spacing:0.04em;font-weight:600;">Pending Orders</small>
-            <div class="h4 mb-0" style="color:#6a1a9a;font-weight:700;">0</div>
+            <div class="h4 mb-0" id="pendingOrders" style="color:#6a1a9a;font-weight:700;">0</div>
             <small class="text-muted">No pending orders</small>
           </div>
         </div>
@@ -368,10 +368,10 @@
             <div style="width:38px;height:38px;border-radius:50%;background:#e3f0fb;display:flex;align-items:center;justify-content:center;color:#0a2e5c;font-size:1rem;flex-shrink:0;">&#128101;</div>
             <div>
               <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Advisory Account</div>
-              <div style="font-size:0.75rem;color:#6b7a8a;">*******8921</div>
+              <div id="accountMask_0" style="font-size:0.75rem;color:#6b7a8a;">*******8921</div>
             </div>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
+          <div id="accountBalance_0" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
           <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Holdings</div>
           <div class="d-flex gap-2" style="gap:0.5rem;">
             <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;">Add Funds</button>
@@ -385,10 +385,10 @@
             <div style="width:38px;height:38px;border-radius:50%;background:#e8f5e8;display:flex;align-items:center;justify-content:center;color:#1a7b3a;font-size:1rem;flex-shrink:0;">&#128176;</div>
             <div>
               <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Cash Account</div>
-              <div style="font-size:0.75rem;color:#6b7a8a;">*******6657</div>
+              <div id="accountMask_1" style="font-size:0.75rem;color:#6b7a8a;">*******6657</div>
             </div>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
+          <div id="accountBalance_1" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
           <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Available Balance</div>
           <div class="d-flex gap-2" style="gap:0.5rem;">
             <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;" onclick="openScheduleModal('Cash Account')">Add Funds</button>
@@ -402,10 +402,10 @@
             <div style="width:38px;height:38px;border-radius:50%;background:#fff8e1;display:flex;align-items:center;justify-content:center;color:#b8860b;font-size:1rem;flex-shrink:0;">&#127941;</div>
             <div>
               <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Sovereign Gold Bond</div>
-              <div style="font-size:0.75rem;color:#6b7a8a;">*******3145</div>
+              <div id="accountMask_2" style="font-size:0.75rem;color:#6b7a8a;">*******3145</div>
             </div>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
+          <div id="accountBalance_2" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
           <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Holdings</div>
           <div class="d-flex gap-2" style="gap:0.5rem;">
             <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;" onclick="openScheduleModal('Sovereign Gold Bond')">Add Funds</button>
@@ -419,10 +419,10 @@
             <div style="width:38px;height:38px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;color:#6a1a9a;font-size:1rem;flex-shrink:0;">&#127760;</div>
             <div>
               <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">International US Depot</div>
-              <div style="font-size:0.75rem;color:#6b7a8a;">*******7783</div>
+              <div id="accountMask_3" style="font-size:0.75rem;color:#6b7a8a;">*******7783</div>
             </div>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
+          <div id="accountBalance_3" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
           <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Value (USD)</div>
           <div class="d-flex gap-2" style="gap:0.5rem;">
             <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;">Add Funds</button>
@@ -561,28 +561,28 @@
       <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
         <div class="card-body text-center p-3">
           <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;color:#6b7a8a;font-weight:600;">Current EE Bond Rate</div>
-          <div class="h3 mb-0" style="color:#0a2e5c;font-weight:700;">2.40%</div>
+          <div class="h3 mb-0" id="eeBondRate" style="color:#0a2e5c;font-weight:700;">2.40%</div>
           <small class="text-muted">Fixed rate through Oct 2026</small>
         </div>
       </div>
       <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
         <div class="card-body text-center p-3">
           <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;color:#6b7a8a;font-weight:600;">Current I Bond Rate</div>
-          <div class="h3 mb-0" style="color:#0a2e5c;font-weight:700;">4.26%</div>
+          <div class="h3 mb-0" id="iBondRate" style="color:#0a2e5c;font-weight:700;">4.26%</div>
           <small class="text-muted">Composite rate through Oct 2026</small>
         </div>
       </div>
       <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
         <div class="card-body text-center p-3">
           <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;color:#6b7a8a;font-weight:600;">Portfolio Yield</div>
-          <div class="h3 mb-0" style="color:#0a2e5c;font-weight:700;">3.42%</div>
+          <div class="h3 mb-0" id="portfolioYield" style="color:#0a2e5c;font-weight:700;">3.42%</div>
           <small class="text-muted">Weighted average</small>
         </div>
       </div>
       <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
         <div class="card-body text-center p-3">
           <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;color:#6b7a8a;font-weight:600;">Interest This Year</div>
-          <div class="h3 mb-0" style="color:#1a7b3a;font-weight:700;">$312.40</div>
+          <div class="h3 mb-0" id="interestThisYear" style="color:#1a7b3a;font-weight:700;">$312.40</div>
           <small class="text-muted">YTD earnings</small>
         </div>
       </div>
@@ -796,17 +796,60 @@
 <script src="/scripts/back-to-top.js" charset="utf-8"></script>
 
 <script>
-  const stored = sessionStorage.getItem('td_user') || localStorage.getItem('td_user');
-  if (stored) {
-    try {
-      const u = JSON.parse(stored);
-      const name = u.firstName || u.name || 'James';
-      document.getElementById('welcomeName').textContent = name;
-      if (u.accountNumber) {
-        document.getElementById('accountNumberDisplay').textContent = u.accountNumber;
-      }
-    } catch(e) {}
+  function formatMoney(value) {
+    const n = Number(value) || 0;
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+
+  // Load this user's live data from the server (session cookie). Refreshes every 5s
+  // so Studio edits appear on the dashboard within ~5 seconds.
+  function loadDashboard(isFirst) {
+    fetch('/api/dashboard-data', { credentials: 'same-origin', cache: 'no-store' })
+      .then(r => {
+        if (r.status === 401) { if (isFirst) window.location.href = '/log-in/'; return null; }
+        return r.json();
+      })
+      .then(data => {
+        if (!data || !data.authenticated) return;
+        const setText = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && val !== undefined && val !== null) el.textContent = val;
+        };
+
+        const name = data.fullName || [data.firstName, data.lastName].filter(Boolean).join(' ') || 'User';
+        setText('welcomeName', name);
+        setText('accountNumberDisplay', data.accountNumber || '');
+        const avatar = document.getElementById('userAvatar');
+        if (avatar) avatar.textContent = (name.trim()[0] || 'U').toUpperCase();
+
+        setText('portfolioValue', formatMoney(data.portfolioValue));
+        setText('interestEarnedYTD', formatMoney(data.interestEarnedYTD));
+        setText('pendingOrders', String(data.pendingOrders || 0));
+
+        if (Array.isArray(data.accounts)) {
+          data.accounts.forEach((acct, i) => {
+            setText('accountMask_' + i, acct.mask);
+            setText('accountBalance_' + i, formatMoney(acct.balance));
+          });
+        }
+
+        setText('eeBondRate', data.eeBondRate);
+        setText('iBondRate', data.iBondRate);
+        setText('portfolioYield', data.portfolioYield);
+        setText('interestThisYear', formatMoney(data.interestThisYear));
+      })
+      .catch(() => {
+        if (isFirst) {
+          const w = document.getElementById('welcomeName');
+          if (w) w.textContent = 'Visitor';
+        }
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    loadDashboard(true);
+    setInterval(function () { loadDashboard(false); }, 5000);
+  });
 
   let currentScheduleAccount = '';
 

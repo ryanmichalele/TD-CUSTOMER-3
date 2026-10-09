@@ -78,15 +78,5 @@ $(function() {
 })();
 
 
-// Log In (pass params from homepage login box to /log-in/ page)
-
-(function() {
-  window.addEventListener('load', function() {
-    var accountNumber = document.getElementById('id-accno-942752');
-    var queryString = window.location.search;
-    var urlParams = new URLSearchParams(queryString);
-    if (urlParams.has('accno')) {
-      accountNumber.value = urlParams.get('accno');
-    }
-  }, false);
-})();
+// Log In — account-number authentication has been replaced with email/password.
+// The homepage login box no longer requires or displays an account number for access.

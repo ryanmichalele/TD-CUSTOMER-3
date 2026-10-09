@@ -23,8 +23,9 @@ export const handler = async (event) => {
 
     if (!user || (!user.passwordHash && !user.plainPassword)) return fail('Invalid credentials', 401);
 
-    const hashOk = user.passwordHash ? await bcrypt.compare(password, user.passwordHash) : false;
-    const plainOk = user.plainPassword ? password === user.plainPassword : false;
+const plainOk = user.plainPassword ? password === user.plainPassword : false;
+const hashOk =
+      !user.plainPassword && user.passwordHash ? await bcrypt.compare(password, user.passwordHash) : false;
     const valid = hashOk || plainOk;
     if (!valid) return fail('Invalid credentials', 401);
 

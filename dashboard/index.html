@@ -361,76 +361,7 @@
       </div>
     </div>
 
-    <div class="card-deck mb-4">
-      <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
-        <div class="card-body">
-          <div class="d-flex align-items-center gap-2 mb-3" style="gap:0.6rem;">
-            <div style="width:38px;height:38px;border-radius:50%;background:#e3f0fb;display:flex;align-items:center;justify-content:center;color:#0a2e5c;font-size:1rem;flex-shrink:0;">&#128101;</div>
-            <div>
-              <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Advisory Account</div>
-              <div id="accountMask_0" style="font-size:0.75rem;color:#6b7a8a;">*******8921</div>
-            </div>
-          </div>
-          <div id="accountBalance_0" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
-          <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Holdings</div>
-          <div class="d-flex gap-2" style="gap:0.5rem;">
-            <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;">Add Funds</button>
-            <button class="btn btn-sm btn-outline-secondary shadow-none" style="font-size:0.78rem;" onclick="openAdvisoryDetailsModal()">View Details</button>
-          </div>
-        </div>
-      </div>
-      <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
-        <div class="card-body">
-          <div class="d-flex align-items-center gap-2 mb-3" style="gap:0.6rem;">
-            <div style="width:38px;height:38px;border-radius:50%;background:#e8f5e8;display:flex;align-items:center;justify-content:center;color:#1a7b3a;font-size:1rem;flex-shrink:0;">&#128176;</div>
-            <div>
-              <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Cash Account</div>
-              <div id="accountMask_1" style="font-size:0.75rem;color:#6b7a8a;">*******6657</div>
-            </div>
-          </div>
-          <div id="accountBalance_1" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
-          <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Available Balance</div>
-          <div class="d-flex gap-2" style="gap:0.5rem;">
-            <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;" onclick="openScheduleModal('Cash Account')">Add Funds</button>
-            <button class="btn btn-sm btn-outline-secondary shadow-none" style="font-size:0.78rem;">View Details</button>
-          </div>
-        </div>
-      </div>
-      <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
-        <div class="card-body">
-          <div class="d-flex align-items-center gap-2 mb-3" style="gap:0.6rem;">
-            <div style="width:38px;height:38px;border-radius:50%;background:#fff8e1;display:flex;align-items:center;justify-content:center;color:#b8860b;font-size:1rem;flex-shrink:0;">&#127941;</div>
-            <div>
-              <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">Sovereign Gold Bond</div>
-              <div id="accountMask_2" style="font-size:0.75rem;color:#6b7a8a;">*******3145</div>
-            </div>
-          </div>
-          <div id="accountBalance_2" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
-          <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Holdings</div>
-          <div class="d-flex gap-2" style="gap:0.5rem;">
-            <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;" onclick="openScheduleModal('Sovereign Gold Bond')">Add Funds</button>
-            <button class="btn btn-sm btn-outline-secondary shadow-none" style="font-size:0.78rem;">View Details</button>
-          </div>
-        </div>
-      </div>
-      <div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">
-        <div class="card-body">
-          <div class="d-flex align-items-center gap-2 mb-3" style="gap:0.6rem;">
-            <div style="width:38px;height:38px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;color:#6a1a9a;font-size:1rem;flex-shrink:0;">&#127760;</div>
-            <div>
-              <div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">International US Depot</div>
-              <div id="accountMask_3" style="font-size:0.75rem;color:#6b7a8a;">*******7783</div>
-            </div>
-          </div>
-          <div id="accountBalance_3" style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">$0.00</div>
-          <div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">Total Value (USD)</div>
-          <div class="d-flex gap-2" style="gap:0.5rem;">
-            <button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;">Add Funds</button>
-            <button class="btn btn-sm btn-outline-secondary shadow-none" style="font-size:0.78rem;">View Details</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="card-deck mb-4" id="accountsContainer"></div>
 
   </div>
 </section>
@@ -827,12 +758,7 @@
         setText('interestEarnedYTD', formatMoney(data.interestEarnedYTD));
         setText('pendingOrders', String(data.pendingOrders || 0));
 
-        if (Array.isArray(data.accounts)) {
-          data.accounts.forEach((acct, i) => {
-            setText('accountMask_' + i, acct.mask);
-            setText('accountBalance_' + i, formatMoney(acct.balance));
-          });
-        }
+        renderAccounts(data.accounts);
 
         setText('eeBondRate', data.eeBondRate);
         setText('iBondRate', data.iBondRate);
@@ -883,24 +809,94 @@
     document.getElementById('confirmationModal').classList.remove('active');
   }
 
-  // Advisory Account details modal
-  function openAdvisoryDetailsModal() {
-    const d = (window.__dashboardData && window.__dashboardData.advisoryDetails) || {};
-    const set = (id, val) => {
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // Render the account cards from the logged-in user's Sanity data.
+  function renderAccounts(accounts) {
+    const container = document.getElementById('accountsContainer');
+    if (!container) return;
+    if (!Array.isArray(accounts) || accounts.length === 0) {
+      container.innerHTML = '<div class="text-muted" style="font-size:0.85rem;padding:0.5rem;">No accounts available yet.</div>';
+      return;
+    }
+
+    container.innerHTML = accounts.map(function (a, i) {
+      a = a || {};
+      const icon = a.icon || '🏦';
+      const iconBg = a.iconBg || '#e3f0fb';
+      const iconColor = a.iconColor || '#0a2e5c';
+      const title = a.title || a.name || ('Account ' + (i + 1));
+      const mask = a.mask || '';
+      const label = a.balanceLabel || 'Total Holdings';
+      return (
+        '<div class="card shadow-sm" style="border-radius:10px;border:1px solid #e0e6ed;">' +
+          '<div class="card-body">' +
+            '<div class="d-flex align-items-center gap-2 mb-3" style="gap:0.6rem;">' +
+              '<div style="width:38px;height:38px;border-radius:50%;background:' + escapeHtml(iconBg) + ';display:flex;align-items:center;justify-content:center;color:' + escapeHtml(iconColor) + ';font-size:1rem;flex-shrink:0;">' + escapeHtml(icon) + '</div>' +
+              '<div>' +
+                '<div style="font-weight:600;color:#1a2a3a;font-size:0.9rem;">' + escapeHtml(title) + '</div>' +
+                '<div style="font-size:0.75rem;color:#6b7a8a;">' + escapeHtml(mask) + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="font-size:1.3rem;font-weight:700;color:#1a7b3a;">' + formatMoney(a.balance) + '</div>' +
+            '<div style="font-size:0.78rem;color:#6b7a8a;margin-bottom:0.5rem;">' + escapeHtml(label) + '</div>' +
+            '<div class="d-flex gap-2" style="gap:0.5rem;">' +
+              '<button class="btn btn-sm btn-outline-primary shadow-none" style="border-color:#0a2e5c;color:#0a2e5c;font-size:0.78rem;" onclick="scheduleAccountFunds(' + i + ')">Add Funds</button>' +
+              '<button class="btn btn-sm btn-outline-secondary shadow-none" style="font-size:0.78rem;" onclick="openAccountDetailsModal(' + i + ')">View Details</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function scheduleAccountFunds(i) {
+    const accounts = (window.__dashboardData && window.__dashboardData.accounts) || [];
+    const a = accounts[i] || {};
+    openScheduleModal(a.title || a.name || 'Account');
+  }
+
+  // Generic account details modal (populated from the clicked card's Sanity data).
+  function openAccountDetailsModal(i) {
+    const data = window.__dashboardData || {};
+    const accounts = Array.isArray(data.accounts) ? data.accounts : [];
+    const a = accounts[i] || {};
+    const set = function (id, val) {
       const el = document.getElementById(id);
       if (el) el.textContent = (val !== undefined && val !== null && val !== '') ? val : '-';
     };
-    set('advAccountName', d.accountName);
-    set('advAddress', d.address);
-    set('advBankName', d.bankName);
-    set('advAccountNumber', d.accountNumber);
-    set('advRoutingNumber', d.routingNumber);
-    set('advBankAddress', d.bankAddress);
-    document.getElementById('advisoryDetailsModal').classList.add('active');
+
+    const holderName = data.fullName || [data.firstName, data.lastName].filter(Boolean).join(' ') || 'Account Holder';
+    set('acdName', holderName);
+    set('acdSubtitle', a.subtitle || a.title || a.name || '');
+    set('acdNumber', a.accountNumber || a.mask || '');
+    set('acdType', a.accountType);
+    set('acdBalance', formatMoney(a.balance));
+    set('acdBalanceLabel', a.balanceLabel);
+    set('acdCurrency', a.currency || 'USD');
+    set('acdStatus', a.status || 'Active');
+    set('acdAddress', a.address);
+    set('acdBank', a.bank);
+    set('acdRouting', a.routingNumber);
+    set('acdBankAddress', a.bankAddress);
+    set('acdDescription', a.description);
+
+    const iconEl = document.getElementById('acdIconCircle');
+    if (iconEl) {
+      iconEl.textContent = a.icon || '🏦';
+      iconEl.style.background = a.iconBg || '#e3f0fb';
+      iconEl.style.color = a.iconColor || '#0a2e5c';
+    }
+
+    document.getElementById('accountDetailsModal').classList.add('active');
   }
 
-  function closeAdvisoryDetailsModal() {
-    document.getElementById('advisoryDetailsModal').classList.remove('active');
+  function closeAccountDetailsModal() {
+    document.getElementById('accountDetailsModal').classList.remove('active');
   }
 
   function confirmSchedule() {
@@ -941,27 +937,41 @@
   }
 </script>
 
-<div class="modal-overlay" id="advisoryDetailsModal">
+<div class="modal-overlay" id="accountDetailsModal">
   <div class="modal-box">
     <div class="modal-header" style="background:#0a2e5c;border-radius:14px 14px 0 0;">
       <div style="display:flex;align-items:center;gap:0.75rem;">
         <img src="/images/logo-treasurydirect-color.svg" alt="TreasuryDirect" style="height:28px;filter:brightness(0) invert(1);">
-        <h3 style="color:#fff;font-size:1rem;margin:0;">Advisory Account Details</h3>
+        <h3 style="color:#fff;font-size:1rem;margin:0;">Account Details</h3>
       </div>
-      <button class="modal-close" onclick="closeAdvisoryDetailsModal()" style="background:rgba(255,255,255,0.15);color:#fff;">&times;</button>
+      <button class="modal-close" onclick="closeAccountDetailsModal()" style="background:rgba(255,255,255,0.15);color:#fff;">&times;</button>
     </div>
     <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+        <div id="acdIconCircle" style="width:44px;height:44px;border-radius:50%;background:#e3f0fb;display:flex;align-items:center;justify-content:center;color:#0a2e5c;font-size:1.2rem;flex-shrink:0;">&#128101;</div>
+        <div>
+          <div id="acdName" style="font-weight:700;color:#1a2a3a;font-size:1rem;">-</div>
+          <div id="acdSubtitle" style="font-size:0.82rem;color:#6b7a8a;">-</div>
+          <div id="acdNumber" style="font-size:0.85rem;color:#0a2e5c;font-weight:600;letter-spacing:0.03em;">-</div>
+        </div>
+      </div>
       <div style="text-align:left;margin:0.25rem 0;">
-        <div class="detail-row"><span class="detail-label">Account Name</span><span class="detail-value" id="advAccountName">-</span></div>
-        <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value" id="advAddress">-</span></div>
-        <div class="detail-row"><span class="detail-label">Bank Name</span><span class="detail-value" id="advBankName">-</span></div>
-        <div class="detail-row"><span class="detail-label">Account Number</span><span class="detail-value" id="advAccountNumber">-</span></div>
-        <div class="detail-row"><span class="detail-label">Routing Number</span><span class="detail-value" id="advRoutingNumber">-</span></div>
-        <div class="detail-row"><span class="detail-label">Bank Address</span><span class="detail-value" id="advBankAddress">-</span></div>
+        <div class="detail-row"><span class="detail-label">Account Type</span><span class="detail-value" id="acdType">-</span></div>
+        <div class="detail-row"><span class="detail-label">Current Balance</span><span class="detail-value" id="acdBalance">-</span></div>
+        <div class="detail-row"><span class="detail-label">Balance Label</span><span class="detail-value" id="acdBalanceLabel">-</span></div>
+        <div class="detail-row"><span class="detail-label">Currency</span><span class="detail-value" id="acdCurrency">-</span></div>
+        <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="status-badge" id="acdStatus">-</span></span></div>
+        <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value" id="acdAddress">-</span></div>
+        <div class="detail-row"><span class="detail-label">Bank</span><span class="detail-value" id="acdBank">-</span></div>
+        <div class="detail-row"><span class="detail-label">Routing Number</span><span class="detail-value" id="acdRouting">-</span></div>
+        <div class="detail-row"><span class="detail-label">Bank Address</span><span class="detail-value" id="acdBankAddress">-</span></div>
+      </div>
+      <div id="acdDescriptionWrap" style="background:#f0f4fa;border-radius:8px;padding:0.75rem 1rem;font-size:0.82rem;color:#2a4a6a;text-align:left;margin:0.75rem 0;">
+        <strong>Description:</strong> <span id="acdDescription">-</span>
       </div>
     </div>
     <div class="modal-footer" style="background:#f8f9fb;border-radius:0 0 14px 14px;">
-      <button class="btn btn-sm text-white shadow-none" onclick="closeAdvisoryDetailsModal()" style="font-size:0.82rem;background:#0a2e5c;border-color:#0a2e5c;">Close</button>
+      <button class="btn btn-sm text-white shadow-none" onclick="closeAccountDetailsModal()" style="font-size:0.82rem;background:#0a2e5c;border-color:#0a2e5c;">Close</button>
     </div>
   </div>
 </div>

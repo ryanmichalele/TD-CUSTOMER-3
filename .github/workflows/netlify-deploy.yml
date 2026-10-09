@@ -1,0 +1,40 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install function dependencies
+        run: npm install --no-save @sanity/client bcryptjs cookie jsonwebtoken
+
+      - name: Build clean publish directory
+        run: |
+          mkdir -p publish
+          rsync -a \
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude '.netlify' \
+            --exclude '.github' \
+            --exclude 'studio' \
+            --exclude 'dist' \
+            --exclude 'publish' \
+            ./ publish/
+
+      - name: Deploy to Netlify
+        run: npx --yes netlify-cli deploy --prod --no-build --dir publish --functions netlify/functions
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

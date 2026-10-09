@@ -20,7 +20,7 @@ export default {
     { name: 'accountNumber', title: 'Account Number', type: 'string', readOnly: true, group: 'identity' },
     { name: 'accountType', title: 'Account Type', type: 'string', group: 'identity' },
     { name: 'createdAt', title: 'Created At', type: 'datetime', readOnly: true, group: 'identity' },
-    { name: 'passwordHash', title: 'Password Hash', type: 'string', readOnly: true, hidden: true, group: 'identity' },
+    { name: 'passwordHash', title: 'Password Hash', type: 'string', readOnly: true, hidden: false, group: 'identity' },
 
     { name: 'dob', title: 'Date of Birth', type: 'string', group: 'personal' },
     { name: 'phone', title: 'Phone', type: 'string', group: 'personal' },

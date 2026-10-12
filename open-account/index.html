@@ -1275,6 +1275,9 @@ function goToStep(n) {
   document.getElementById('stepTitle').textContent = titles[n];
   document.getElementById('progressHeader').style.display = (n === 8) ? 'none' : 'block';
   if (n === 7) buildReview();
+  if (n === 7 && typeof window.renderTurnstile === 'function') {
+    window.renderTurnstile(document.querySelector('#step7 .turnstile-widget'));
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

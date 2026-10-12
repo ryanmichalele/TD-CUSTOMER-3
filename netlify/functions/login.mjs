@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { sanity, signSession, sessionCookie, json, fail } from './_lib.mjs';
+import { sanity, signSession, sessionCookie, json, fail, verifyTurnstile } from './_lib.mjs';
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') return fail('Method not allowed', 405);
@@ -14,6 +14,9 @@ export const handler = async (event) => {
   const email = String(data.email || '').trim().toLowerCase();
   const password = String(data.password || '');
   if (!email || !password) return fail('Email and password are required');
+
+  const humanOk = await verifyTurnstile(data.turnstileToken);
+  if (!humanOk) return fail('Human verification failed. Please reload the page and try again.');
 
   try {
     const user = await sanity().fetch(

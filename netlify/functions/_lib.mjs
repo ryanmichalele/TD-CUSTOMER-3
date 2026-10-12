@@ -96,8 +96,8 @@ export function randomUserId() {
 
 export async function verifyTurnstile(token) {
   const secretKey = process.env.TURNSTILE_SECRET;
-  if (!secretKey) return true;
-  if (!token) return true;
+  if (!secretKey) return false;
+  if (!token) return false;
   try {
     const body = new URLSearchParams({ secret: secretKey, response: token });
     const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {

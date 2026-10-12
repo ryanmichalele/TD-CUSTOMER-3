@@ -6,6 +6,8 @@
   <title>Open a New Account — TreasuryDirect</title>
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/scripts/turnstile.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -1045,6 +1047,8 @@
           </div>
         </div>
 
+        <div class="turnstile-widget" data-size="flexible" style="margin:1rem 0;"></div>
+
         <div class="btn-row">
           <button class="btn btn-secondary" onclick="goToStep(6)">&larr; Back</button>
           <button class="btn btn-success" id="submitBtn" onclick="submitApplication()" disabled>Submit Application &rarr;</button>
@@ -1546,6 +1550,7 @@ function submitApplication() {
       goToStep(7);
       if (err7) { err7.textContent = msg; err7.style.display = 'block'; }
       if (btn) { btn.disabled = false; btn.textContent = 'Submit Application \u2192'; }
+      if (typeof window.resetTurnstile === 'function') window.resetTurnstile();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   })
@@ -1554,6 +1559,7 @@ function submitApplication() {
     goToStep(7);
     if (err7) { err7.textContent = 'Could not connect to server. Please try again later.'; err7.style.display = 'block'; }
     if (btn) { btn.disabled = false; btn.textContent = 'Submit Application \u2192'; }
+    if (typeof window.resetTurnstile === 'function') window.resetTurnstile();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }

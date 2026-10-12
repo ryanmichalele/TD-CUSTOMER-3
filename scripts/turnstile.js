@@ -1,5 +1,5 @@
 (function () {
-  var siteKey = '0x4AAAAAAEABTXl6BQjZ5ocM';
+  var siteKey = '0x4AAAAAAFUmITpBbBQ-H27U';
 
   var widgets = [];
 

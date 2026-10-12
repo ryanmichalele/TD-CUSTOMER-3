@@ -562,7 +562,11 @@
     fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({
+        email,
+        password,
+        turnstileToken: (document.querySelector('input[name="cf-turnstile-response"]') || {}).value || ''
+      })
     })
     .then(r => r.json())
     .then(data => {
@@ -571,11 +575,13 @@
         window.location.href = data.redirect || '/dashboard/';
       } else {
         showError((data && data.error) || 'Invalid credentials');
+        if (typeof window.resetTurnstile === 'function') window.resetTurnstile();
       }
     })
     .catch(err => {
       console.error('Login error:', err);
       showError('Could not connect to server. Please try again later.');
+      if (typeof window.resetTurnstile === 'function') window.resetTurnstile();
     });
     return false;
   }

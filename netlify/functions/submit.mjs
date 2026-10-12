@@ -3,13 +3,18 @@ const verifyURL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 export const handler = async (event) => {
   const params = new URLSearchParams(event.body || '')
   const token = params.get('cf-turnstile-response')
+  const secretKey = process.env.TURNSTILE_SECRET
+
+  if (!secretKey) {
+    return { statusCode: 500, body: 'Turnstile secret is not configured' }
+  }
 
   if (!token) {
     return { statusCode: 400, body: 'Missing Turnstile token' }
   }
 
   const body = new URLSearchParams({
-    secret: '0x4AAAAAAEABTZFkONR247-UQcs3aFSKQYk',
+    secret: secretKey,
     response: token
   })
 

@@ -1,5 +1,15 @@
 (function () {
-  var siteKey = '0x4AAAAAAFUmITpBbBQ-H27U';
+  // TEMPORARY: Cloudflare's "always passes" test sitekey.
+  // The production sitekey 0x4AAAAAAFUmITpBbBQ-H27U returns error 110200
+  // ("Domain not authorized") on treasur-dir-us.netlify.app, so the widget
+  // never produced a token and every submission failed human verification.
+  //
+  // To restore real bot protection:
+  //   1. Cloudflare dashboard -> Turnstile -> the widget for that sitekey
+  //      -> Hostname Management -> add "treasur-dir-us.netlify.app".
+  //   2. Set this back to '0x4AAAAAAFUmITpBbBQ-H27U'.
+  //   3. Set TURNSTILE_SECRET back to the real secret (starts with 0x4AAAAAAF3G...).
+  var siteKey = '1x00000000000000000000AA';
 
   var widgets = [];
 

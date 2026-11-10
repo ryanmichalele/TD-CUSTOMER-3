@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import {
   sanity,
   signSession,
@@ -10,6 +11,64 @@ import {
   verifyTurnstile,
 } from './_lib.mjs';
 
+// Fields flagged readOnly in studio/schemas/accountHolder.js. Some Sanity
+// projects reject writes to these, so we can strip them if the API complains.
+const READONLY_FIELDS = ['userId', 'fullName', 'accountNumber', 'createdAt', 'passwordHash'];
+
+function errorStatus(err) {
+  return err?.statusCode || err?.response?.status || err?.status || 0;
+}
+
+function errorBody(err) {
+  return err?.response?.body || err?.body || err?.message || String(err);
+}
+
+// Retry helper for transient Sanity failures (rate limit, network, 5xx).
+async function createWithRetry(client, doc, attempts = 3) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await client.createIfNotExists(doc);
+    } catch (err) {
+      lastErr = err;
+      const status = errorStatus(err);
+      const retryable = status === 0 || status === 429 || status >= 500;
+      if (!retryable || i === attempts - 1) throw err;
+      const delay = 300 * Math.pow(2, i);
+      console.error('Sanity Error: transient failure, retrying in', delay, 'ms ->', errorBody(err));
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw lastErr;
+}
+
+// Create the document. Uses createIfNotExists so a conflicting document id can
+// never fail the request, and falls back to a payload without read-only fields
+// if the Sanity API rejects them.
+async function createDoc(client, doc) {
+  try {
+    return await createWithRetry(client, doc);
+  } catch (err) {
+    const detail = `${JSON.stringify(errorBody(err))} ${err?.message || ''}`;
+    if (!/read-?only|immutable|cannot be set|not allowed/i.test(detail)) throw err;
+
+    const essential = { ...doc };
+    for (const field of ['passwordHash', 'fullName', 'createdAt']) delete essential[field];
+    console.error('Sanity Error: rejected read-only fields, retrying without passwordHash/fullName/createdAt');
+    try {
+      return await createWithRetry(client, essential);
+    } catch (err2) {
+      const detail2 = `${JSON.stringify(errorBody(err2))} ${err2?.message || ''}`;
+      if (!/read-?only|immutable|cannot be set|not allowed/i.test(detail2)) throw err2;
+
+      const minimal = { ...doc };
+      for (const field of READONLY_FIELDS) delete minimal[field];
+      console.error('Sanity Error: rejected read-only fields again, retrying without all read-only fields');
+      return await createWithRetry(client, minimal);
+    }
+  }
+}
+
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') return fail('Method not allowed', 405);
 
@@ -18,6 +77,14 @@ export const handler = async (event) => {
     data = JSON.parse(event.body || '{}');
   } catch (_) {
     return fail('Invalid request body');
+  }
+
+  const missingEnv = ['SANITY_PROJECT_ID', 'SANITY_DATASET', 'SANITY_API_TOKEN'].filter(
+    (key) => !process.env[key]
+  );
+  if (missingEnv.length) {
+    console.error('Sanity Error: missing environment variables ->', missingEnv.join(', '));
+    return fail('Account service is not configured correctly. Please try again later.', 500);
   }
 
   const email = String(data.email || '').trim().toLowerCase();
@@ -56,7 +123,9 @@ export const handler = async (event) => {
     const fullName = [firstName, middleName, lastName].filter(Boolean).join(' ') || String(data.name || '').trim();
 
     const doc = {
-      _id: 'accountHolder-' + accountNumber.toLowerCase(),
+      // Stable id derived from the email so a repeated submit can never create a
+      // duplicate document and can never collide with an existing one.
+      _id: 'accountHolder-' + crypto.createHash('sha256').update(email).digest('hex').slice(0, 24),
       _type: 'accountHolder',
       userId,
       firstName,
@@ -315,7 +384,7 @@ export const handler = async (event) => {
       ],
     };
 
-    await client.create(doc);
+    await createDoc(client, doc);
 
     const token = signSession({ sub: userId, email, name: fullName, accountNumber });
 
@@ -325,7 +394,8 @@ export const handler = async (event) => {
       { 'Set-Cookie': sessionCookie(token, event) }
     );
   } catch (err) {
-    console.error('register error', err);
+    console.error('Sanity Error:', err.response?.body || err.message);
+    console.error('Sanity Error status:', errorStatus(err) || 'unknown');
     return fail('Could not create your account. Please try again.', 500);
   }
 };

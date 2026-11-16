@@ -1,0 +1,7 @@
+# Force browsers to always revalidate the Turnstile loader so a stale
+# cached copy (with an old sitekey) can never be served.
+/scripts/turnstile.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/turnstile.js
+  Cache-Control: public, max-age=0, must-revalidate
